@@ -1,0 +1,16 @@
+require "RCons"
+
+include RCons
+
+checkRubyVersion
+
+clistart ARGV
+
+%w{RConstruct.rb RConsFile.rb RConstruct RConsFile}.each do |file|
+  if File.exists? file
+    puts "#{file} found, scanning!"
+    load file
+  else
+    puts "#{file} not found, skipping!"
+  end
+end

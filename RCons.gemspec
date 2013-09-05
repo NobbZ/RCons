@@ -8,10 +8,12 @@ Gem::Specification.new do |spec|
   spec.version       = RCons::VERSION
   spec.authors       = ["Norbert Melzer"]
   spec.email         = ["timmelzer@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Ruby Constructor}
+  spec.summary       = %q{Ruby Constructor}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "GPL v3"
+  
+  spec.required_ruby_version	= ">= 1.9.3"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
