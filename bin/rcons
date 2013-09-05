@@ -4,7 +4,11 @@ include RCons
 
 checkRubyVersion
 
+puts "This is RCons v#{VERSION}."
+
 clistart ARGV
+
+require "RConsDSL"
 
 %w{RConstruct.rb RConsFile.rb RConstruct RConsFile}.each do |file|
   if File.exists? file
