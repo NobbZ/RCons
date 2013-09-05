@@ -24,11 +24,22 @@ module RCons
       # === Parameters
       # [dependancy]  The Target that this Target depends on (please remember,
       #               that even a source file is considered a Target!).
+      #               Dependancy can be on of the following types:
+      #               * <tt>Target</tt>
+      #               * <tt>String</tt>
+      #               * <tt>Array</tt> which elements are <tt>Target</tt>s or <tt>String</tt>s
+      #               A warning will be logged for elements that are invalid.
       def add_dependancy(dependancy)
         if dependancy.is_a? Target
           @dependancies += dependancy
-        else dependancy.is_a? String
+        elsif dependancy.is_a? String
           @dependancies += Target.new(dependancy, :guess)
+        elsif dependancy.is_a? Array
+          dependancy.each do |d|
+            self.add_dependancy(d)
+          end
+        else
+          puts "WARNING: #{dependancy} is not a valid Target!"
         end
       end
     end
@@ -45,6 +56,7 @@ module RCons
     # them, afterwards the resulting <tt>hello.o</tt> and <tt>world.o</tt> will
     # be linked together into <tt>example</tt>
     def executable(target, sources)
+      
     end
   end
 end

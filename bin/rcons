@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "RCons"
 
 include RCons
@@ -8,7 +10,7 @@ puts "This is RCons v#{VERSION}."
 
 clistart ARGV
 
-require "RConsDSL"
+require "RCons/DSL"
 
 %w{RConstruct.rb RConsFile.rb RConstruct RConsFile}.each do |file|
   if File.exists? file
