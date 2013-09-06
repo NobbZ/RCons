@@ -6,15 +6,21 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'RCons'
+```ruby
+gem 'RCons'
+```
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install RCons
+```bash
+$ install RCons
+```
 
 ## Usage
 
