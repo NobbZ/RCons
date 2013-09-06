@@ -11,6 +11,9 @@ puts "This is RCons v#{VERSION}."
 clistart ARGV
 
 require "RCons/DSL"
+include RCons::DSL
+
+$allTarget = Target.new("all", :virtual)
 
 %w{RConstruct.rb RConsFile.rb RConstruct RConsFile}.each do |file|
   if File.exists? file
@@ -20,3 +23,13 @@ require "RCons/DSL"
     puts "#{file} not found, skipping!"
   end
 end
+
+def showDeps(dep)
+  puts dep
+  dep.dependencies.each do |d|
+    puts d
+    showDeps d
+  end
+end
+
+showDeps $allTarget

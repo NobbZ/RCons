@@ -9,11 +9,14 @@ module RCons
       #         directory.
       # [type]  The type of the target, can be one of:
       #         * <tt>:executable</tt>
-      #         * <tt>:intermediat</tt> (not implemented)
+      #         * <tt>:intermediate</tt> (not implemented)
       #         * <tt>:source</tt> (not implemented)
       #         * <tt>:guess</tt>: RCons will try to guess the type of the target
       #           depending on its extension.
-      def new(name, type)
+      #         * <tt>:virtual</tt>: Defines a target that just has dependencies,
+      #           but not a real own target. It is used to organize other targets
+      #           under a common Target.
+      def initialize(name, type)
         @name = name
         @type = type
         @dependancies = []
@@ -31,9 +34,9 @@ module RCons
       #               A warning will be logged for elements that are invalid.
       def add_dependancy(dependancy)
         if dependancy.is_a? Target
-          @dependancies += dependancy
+          @dependancies << dependancy
         elsif dependancy.is_a? String
-          @dependancies += Target.new(dependancy, :guess)
+          @dependancies << Target.new(dependancy, :guess)
         elsif dependancy.is_a? Array
           dependancy.each do |d|
             self.add_dependancy(d)
@@ -41,6 +44,14 @@ module RCons
         else
           puts "WARNING: #{dependancy} is not a valid Target!"
         end
+      end
+      
+      def dependencies
+        @dependancies
+      end
+      
+      def to_s
+        @name
       end
     end
     
@@ -56,7 +67,15 @@ module RCons
     # them, afterwards the resulting <tt>hello.o</tt> and <tt>world.o</tt> will
     # be linked together into <tt>example</tt>
     def executable(target, sources)
-      
+      target = Target.new target, :executable
+      $allTarget.add_dependancy target
+      if sources.is_a? String
+        sources = [sources]
+      end
+      sources.each_index do |i|
+        t = Target.new(sources[i], :guess)
+        target.add_dependancy t
+      end
     end
   end
 end
