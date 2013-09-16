@@ -19,17 +19,10 @@ $allTarget = Target.new("all", :virtual)
   if File.exists? file
     puts "#{file} found, scanning!"
     load file
+    break
   else
     puts "#{file} not found, skipping!"
   end
 end
 
-def showDeps(dep)
-  puts dep
-  dep.dependencies.each do |d|
-    puts d
-    showDeps d
-  end
-end
 
-showDeps $allTarget
