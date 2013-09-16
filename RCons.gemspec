@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Ruby Constructor}
   spec.summary       = %q{Ruby Constructor}
   spec.homepage      = ""
-  spec.license       = "GPL v3"
+  spec.license       = "MIT"
   
   spec.required_ruby_version	= ">= 1.9.3"
 

@@ -19,7 +19,7 @@ module RCons
       def initialize(name, type)
         @name = name
         @type = type
-        @dependancies = []
+        @dependencies = []
       end
       
       # Adds an dependancy to the target
@@ -29,9 +29,9 @@ module RCons
       #   is considered a Target!).
       def add_dependancy(dependancy)
         if dependancy.is_a? Target
-          @dependancies << dependancy
+          @dependencies << dependancy
         elsif dependancy.is_a? String
-          @dependancies << Target.new(dependancy, :guess)
+          @dependencies << Target.new(dependancy, :guess)
         elsif dependancy.is_a? Array
           dependancy.each do |d|
             self.add_dependancy(d)
@@ -42,7 +42,7 @@ module RCons
       end
       
       def dependencies
-        @dependancies
+        @dependencies
       end
       
       def to_s
