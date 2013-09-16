@@ -4,18 +4,18 @@ module RCons
     class Target
       # Creates a new target.
       #
-      # === Parameters
-      # [name]  The name of the target, also the output path relative to working
-      #         directory.
-      # [type]  The type of the target, can be one of:
-      #         * <tt>:executable</tt>
-      #         * <tt>:intermediate</tt> (not implemented)
-      #         * <tt>:source</tt> (not implemented)
-      #         * <tt>:guess</tt>: RCons will try to guess the type of the target
-      #           depending on its extension.
-      #         * <tt>:virtual</tt>: Defines a target that just has dependencies,
-      #           but not a real own target. It is used to organize other targets
-      #           under a common Target.
+      # @param  [String]  name  The name of the target, also the output path
+      #   relative to working directory.
+      # @param  [Symbol]  type  The type of the target, can be one of:
+      #
+      #   * `:executable`
+      #   * `:intermediate` (not implemented)
+      #   * `:source` (not implemented)
+      #   * `:guess`: RCons will try to guess the  type of the target depending 
+      #     on its extension.
+      #   * `:virtual`: Defines a target that just has dependencies, but not a
+      #     real own target. It is used to organize other targets under a common
+      #     Target.
       def initialize(name, type)
         @name = name
         @type = type
@@ -24,14 +24,9 @@ module RCons
       
       # Adds an dependancy to the target
       #
-      # === Parameters
-      # [dependancy]  The Target that this Target depends on (please remember,
-      #               that even a source file is considered a Target!).
-      #               Dependancy can be on of the following types:
-      #               * <tt>Target</tt>
-      #               * <tt>String</tt>
-      #               * <tt>Array</tt> which elements are <tt>Target</tt>s or <tt>String</tt>s
-      #               A warning will be logged for elements that are invalid.
+      # @param  [Target, String, Array<Target, String>]  dependancy  The Target
+      #   that this Target depends on (please remember, that even a source file 
+      #   is considered a Target!).
       def add_dependancy(dependancy)
         if dependancy.is_a? Target
           @dependancies << dependancy
@@ -57,15 +52,16 @@ module RCons
     
     # Creates an executable with the name target by compiling the sources.
     #
-    # === Parameters
-    # [target]  The name of the target without fileextensions!
-    # [sources] An array of strings which contains the necessary sourcefiles, 
-    #           relative to the RCons-Script
-    # === Example
-    #    executable "example", %w{hello.c world.c}
-    # This will take <tt>hello.c</tt> and <tt>world.c</tt> and compile each of
-    # them, afterwards the resulting <tt>hello.o</tt> and <tt>world.o</tt> will
-    # be linked together into <tt>example</tt>
+    # @param [String]                 target  The name of the target without
+    #   fileextensions!
+    # @param [String, Array<String>]  sources An array of strings which contains
+    #   the necessary sourcefiles, relative to the RCons-Script
+    # 
+    # @example
+    #   executable "example", ["hello.c", "world.c"]
+    # This will take `hello.c` and `world.c` and compile each of
+    # them, afterwards the resulting `hello.o` and `world.o` will
+    # be linked together into `example`
     def executable(target, sources)
       target = Target.new target, :executable
       $allTarget.add_dependancy target
