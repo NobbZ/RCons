@@ -5,16 +5,13 @@ module RCons
   # Checks if the current ruby version is compatible with RCons. Even if the 
   # gemspec specifies at least ruby 1.9.3 I do this test just to be sure not to
   # get any exceptions thrown in mid of compiling process!
-  # 
-  # @todo Colorize the output with `paint`-gem
   def checkRubyVersion
-    puts "---- Checking for ruby version\n"
-    puts "-- ruby version found: #{Gem.ruby_version} -> "
+    $logger.debug "Checking for ruby version"
+    $logger.debug "ruby version found: #{Gem.ruby_version}; needed: >= 1.9.3"
     if Gem.ruby_version() < Gem::Version.create("1.9.3")
-      puts "NOT OK, required ruby version is >= 1.9.3!\n"
+      $logger.fatal "Ruby Version NOT OK, required ruby version is >= 1.9.3!\n"
       exit 1
     end
-    puts "OK!"
   end
   
   # Evaluates CLI arguments

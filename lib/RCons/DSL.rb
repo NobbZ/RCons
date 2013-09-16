@@ -1,6 +1,6 @@
 module RCons
   module DSL
-    
+
     class Target
       # Creates a new target.
       #
@@ -17,11 +17,11 @@ module RCons
       #     real own target. It is used to organize other targets under a common
       #     Target.
       def initialize(name, type)
-        @name = name
-        @type = type
+        @name         = name
+        @type         = type
         @dependencies = []
       end
-      
+
       # Adds an dependancy to the target
       #
       # @param  [Target, String, Array<Target, String>]  dependancy  The Target
@@ -37,19 +37,19 @@ module RCons
             self.add_dependancy(d)
           end
         else
-          puts "WARNING: #{dependancy} is not a valid Target!"
+          $logger.warn "WARNING: #{dependancy} is not a valid Target!"
         end
       end
-      
+
       def dependencies
         @dependencies
       end
-      
+
       def to_s
         @name
       end
     end
-    
+
     # Creates an executable with the name target by compiling the sources.
     #
     # @param [String]                 target  The name of the target without
