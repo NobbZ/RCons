@@ -52,12 +52,13 @@ module RCons
     
     # Creates an executable with the name target by compiling the sources.
     #
-    # === Parameters
-    # [target]  The name of the target without fileextensions!
-    # [sources] An array of strings which contains the necessary sourcefiles, 
-    #           relative to the RCons-Script
-    # === Example
-    #    executable "example", %w{hello.c world.c}
+    # @param [String]                 target  The name of the target without
+    #   fileextensions!
+    # @param [String, Array<String>]  sources An array of strings which contains
+    #   the necessary sourcefiles, relative to the RCons-Script
+    # 
+    # @example
+    #   executable "example", ["hello.c", "world.c"]
     # This will take `hello.c` and `world.c` and compile each of
     # them, afterwards the resulting `hello.o` and `world.o` will
     # be linked together into `example`
