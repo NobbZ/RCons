@@ -13,6 +13,7 @@ module RCons
     def initialize(*)
       super
 
+
       Logging.color_scheme('bright',
                            levels: {
                              debug: :blue,
@@ -28,7 +29,6 @@ module RCons
       Logging.appenders.stdout(
         'stdout',
         layout: Logging.layouts.pattern(
-#            pattern:      '[%d] %-5l %c: %m\n',
                   pattern:      '[%d]%6l: %m\n',
                   color_scheme: 'bright'
                 )
@@ -38,7 +38,8 @@ module RCons
       $logger = Logging.logger[:rcons]
       $logger.add_appenders 'stdout'
       $logger.level = opts[:log]
-      puts "Logging level set to #{$logger.level}!"
+      $logger.info "This is RCons v#{VERSION}."
+      RCons.checkRubyVersion
       $allTarget = DSL::Target.new("all", :virtual)
     end
 
