@@ -1,5 +1,8 @@
 require 'graphviz'
 
+require 'RCons/DSL'
+require 'RCons/DSL/Target'
+
 module RCons::DSL
 
   # Creates an executable with the name target by compiling the sources.
@@ -25,6 +28,22 @@ module RCons::DSL
     sources.each do |s|
       t = Target.new(s, :guess)
       target.add_dependency t.parents
+    end
+  end
+
+  def self.parse
+    %w{RConstruct.rb RConsFile.rb RConstruct RConsFile}.each do |file|
+      if File.exists? file
+        $logger.info "#{file} found, scanning!"
+        load file
+        break
+      else
+        $logger.debug "#{file} not found, skipping!"
+        if file=='RConsFile'
+          $logger.fatal 'No RCons file found'
+          exit(1)
+        end
+      end
     end
   end
 end
