@@ -13,7 +13,7 @@ Logging.color_scheme('bright',
                        error: :red,
                        fatal: [:white, :on_red]
                      },
-                     date:    :blue,
+                     date:    :cyan,
                      logger:  :cyan
 )
 
@@ -21,7 +21,7 @@ Logging.appenders.stdout(
   'stdout',
   layout: Logging.layouts.pattern(
 #            pattern:      '[%d] %-5l %c: %m\n',
-            pattern:      '[%5l] %m\n',
+            pattern:      '[%d]%6l: %m\n',
             color_scheme: 'bright'
           )
 )
@@ -35,8 +35,6 @@ include RCons
 checkRubyVersion
 
 $logger.info "This is RCons v#{VERSION}."
-
-clistart ARGV
 
 require "RCons/DSL"
 include RCons::DSL
@@ -57,4 +55,4 @@ $allTarget = Target.new("all", :virtual)
   end
 end
 
-
+clistart ARGV
