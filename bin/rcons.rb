@@ -26,9 +26,15 @@ Logging.appenders.stdout(
           )
 )
 
+if ARGV.include? '-l'
+  loglevel = ARGV[ARGV.find_index('-l')+1]
+else
+  loglevel = :debug
+end
+
 $logger = Logging.logger[:rcons]
 $logger.add_appenders 'stdout'
-$logger.level = :debug
+$logger.level = loglevel
 
 include RCons
 
