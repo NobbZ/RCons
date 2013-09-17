@@ -1,3 +1,5 @@
+require 'graphviz'
+
 module RCons
   module DSL
 
@@ -41,7 +43,6 @@ module RCons
       #   that this Target depends on (please remember, that even a source file
       #   is considered a Target!).
       def add_dependency(dependency)
-        $logger.debug "Target '#{@name}'.add_dependency #{dependency}"
         if dependency.is_a? Target
           @dependencies << dependency
         elsif dependency.is_a? String
@@ -53,7 +54,6 @@ module RCons
         else
           $logger.warn "WARNING: #{dependency} is not a valid Target!"
         end
-        $logger.debug @dependencies
       end
 
       def parents
@@ -68,8 +68,9 @@ module RCons
         @name
       end
 
-      def to_dot
+      def to_dot(g)
         $logger.debug "Depgraphing #{@name}"
+=begin
         retval = "#{@name.downcase.gsub(/[^a-z0-9]/,
                                         '')}\t[label=\"#{@name}\"]\n"
         @dependencies.each do |target|
@@ -79,6 +80,14 @@ module RCons
         end
 
         retval
+=end
+        g.add_node @name.downcase.gsub(/[^A-Za-z0-9]/, ''), { label: @name }
+        @dependencies.each do |d|
+          d.to_dot g
+          g.add_edge @name.downcase.gsub(/[^a-z0-9]/, ''),
+                     d.to_s.downcase.gsub(/[^a-z0-9]/, ''),
+                     {}
+        end
       end
     end
 
