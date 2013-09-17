@@ -1,6 +1,32 @@
 module RCons::DSL
 
+  # A possible {Target Target} for the compiling process.
   class Target
+    # @!attribute [r] dependencies
+    #   @return [Array<Target>] an {Array} of {Target Targets} this {Target Target}
+    #     depends on.
+    # @!attribute [r] name
+    #   @return [String] the name of the target. For targets that correspond to
+    #     a file in the filesystem, this is also the filename and path relative
+    #     to the project folder.
+    # @!attribute [r] parents
+    #   @return [Array<Target>] an {Array} of {Target Targets} this {Target Target}
+    #     is a dependency for.
+    #   @bug Isn't resolved completely and seems to have huge holes at some points.
+    # @!attribute [r] type
+    #   @return [Symbol] the type of the {Target Target}. Can be one of:
+    #     <dl>
+    #       <di><tt>:executable</tt><di><dd>This {Target Target} will be linked into a executable file.</dd>
+    #       <di><tt>:intermediate</tt></di><dd>Dummy text</dd>
+    #       <di><tt>:source</tt></di><dd>Dummy text</dd>
+    #       <di><tt>:guess</tt></di><dd>RCons will try to guess the  type of the target depending on its extension.</dd>
+    #       <di><tt>:virtual</tt></di><dd>Defines a target that just has dependencies, but not a real own target. It is used to organize other targets under a common Target.</dd>
+    #     </dl>
+    attr_reader :dependencies,
+                :name,
+                :parents,
+                :type
+
     # Creates a new target.
     #
     # @param  [String]  name  The name of the target, also the output path
@@ -53,18 +79,16 @@ module RCons::DSL
       end
     end
 
-    def parents
-      @parents
-    end
-
-    def dependencies
-      @dependencies
-    end
-
+    # String representation of the {Target Target}
+    #
+    # @return [String] The String representation of the {Target Target}.
     def to_s
       @name
     end
 
+    # GraphViz representation of this {Target Target}.
+    #
+    # @param [GraphViz] g The in-memory representation of the graph
     def to_dot(g)
       $logger.debug "Add node for #{@name}"
       g.add_node @name.downcase.gsub(/[^A-Za-z0-9]/, ''), {label: @name}
