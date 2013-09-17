@@ -47,7 +47,7 @@ module RCons
   #     <di>`true`</di><dd>tries to open the graph in external viewer</dd>
   #     <di>`false`</di><dd>just quit without viewing the graph</dd>
   #   <dl>
-  def drawGraph(view = false)
+  def self.drawGraph(view = false)
     $logger.info 'Creating depGraph in memory'
     graph = GraphViz::new(:G, type: :digraph) do |g|
       $allTarget.to_dot g
