@@ -24,8 +24,7 @@ module RCons
       case args[0]
       when 'graph'
         $logger.info 'Recognized command \'graph\''
-        drawGraph(args.include?("-o") | args.include?("--open") | args
-        .include?("--view"))
+        drawGraph(args.include?("-o") | args.include?("--open") | args.include?("--view"))
       else
         $logger.info 'No command found in arguments, doing nothing'
       end
@@ -46,14 +45,21 @@ module RCons
   #   <dl>
   def drawGraph(view = false)
     $logger.info "Creating depGraph.dot"
+=begin
     File.open('depGraph.dot', 'wt') do |dotFile|
       dotFile.print "digraph G {\n"
       dotFile.print "  all [label=\"all\"]\n"
       dotFile.print $allTarget.to_dot
       dotFile.print "}\n"
     end
+=end
+    require 'graphviz'
+    graph = GraphViz::new(:G, type: :digraph) do |g|
+      $allTarget.to_dot g
+    end
     $logger.info 'Creating depGrpah.svg'
-    `dot -Tsvg -odepGraph.svg depGraph.dot`
+    graph.output(svg: "depGraph.svg", nothugly: true)
+    #`dot -Tsvg -odepGraph.svg depGraph.dot`
     if view
       $logger.info 'Opening depGraph.svg'
       `xdg-open depGraph.svg`
