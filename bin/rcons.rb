@@ -27,7 +27,10 @@ Logging.appenders.stdout(
 )
 
 if ARGV.include? '-l'
-  loglevel = ARGV[ARGV.find_index('-l')+1]
+  index = ARGV.find_index('-l')
+  loglevel = ARGV[index + 1]
+  ARGV.delete_at index + 1
+  ARGV.delete_at index
 else
   loglevel = :debug
 end
