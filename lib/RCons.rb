@@ -1,3 +1,5 @@
+require 'graphviz'
+
 require 'RCons/version'
 
 module RCons
@@ -44,22 +46,12 @@ module RCons
   #     <di>`false`</di><dd>just quit without viewing the graph</dd>
   #   <dl>
   def drawGraph(view = false)
-    $logger.info "Creating depGraph.dot"
-=begin
-    File.open('depGraph.dot', 'wt') do |dotFile|
-      dotFile.print "digraph G {\n"
-      dotFile.print "  all [label=\"all\"]\n"
-      dotFile.print $allTarget.to_dot
-      dotFile.print "}\n"
-    end
-=end
-    require 'graphviz'
+    $logger.info 'Creating depGraph in memory'
     graph = GraphViz::new(:G, type: :digraph) do |g|
       $allTarget.to_dot g
     end
-    $logger.info 'Creating depGrpah.svg'
-    graph.output(svg: "depGraph.svg", nothugly: true)
-    #`dot -Tsvg -odepGraph.svg depGraph.dot`
+    $logger.info 'Saving depGrpah.svg'
+    graph.output(svg: 'depGraph.svg', nothugly: true)
     if view
       $logger.info 'Opening depGraph.svg'
       `xdg-open depGraph.svg`

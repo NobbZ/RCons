@@ -36,7 +36,8 @@ checkRubyVersion
 
 $logger.info "This is RCons v#{VERSION}."
 
-require "RCons/DSL"
+require 'RCons/DSL'
+require 'RCons/DSL/Target'
 include RCons::DSL
 
 $allTarget = Target.new("all", :virtual)
