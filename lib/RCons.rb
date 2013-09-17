@@ -19,6 +19,8 @@ module RCons
   # Evaluates CLI arguments
   #
   # @param [Array<String>] args The arguments from the commandline
+  #
+  # @todo Really needs massive cleanup!
   def clistart(args)
     $logger.debug 'Invoked with params:'
     $logger.debug args
