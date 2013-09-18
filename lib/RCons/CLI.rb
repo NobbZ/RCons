@@ -4,6 +4,7 @@ require 'thor'
 require 'RCons'
 require 'RCons/DSL'
 require 'RCons/DSL/Target'
+require 'RCons/DSL/GenericHandler'
 
 module RCons
 
@@ -34,6 +35,8 @@ module RCons
       )
 
       opts    = options.dup
+      opts[:log] = 0 if opts[:verbose]
+      opts[:log] = 3 if opts[:silent]
       $logger = Logging.logger[:rcons]
       $logger.add_appenders 'stdout'
       $logger.level = opts[:log]
@@ -68,11 +71,21 @@ module RCons
                   type:    :boolean,
                   default: false,
                   desc:    'Opens the graph in viewer after generating it'
-
     def graph
       opts = options.dup
       RCons::DSL.parse
       RCons.draw_graph opts[:view]
+    end
+
+    desc :handler, 'Spits out the name of a possible Handler for the given file'
+    long_desc <<-D
+      Given a filename (no need to exist on harddrive!) you will be presented with
+      the classname of the Handler that cares about this particular filetype.
+    D
+    def handler(filename)
+      target = RCons::DSL::Target.new(filename, :guess)
+
+      puts "#{filename} will be handled by #{(RCons::DSL::GenericHandler.get_handler(target)).class.to_s}"
     end
 
   end
