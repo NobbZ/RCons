@@ -88,6 +88,15 @@ module RCons
       puts "#{filename} will be handled by #{(RCons::DSL::GenericHandler.get_handler(target)).class.to_s}"
     end
 
+    desc :build, 'Builds the specified target'
+    long_desc <<-D
+      Tries to build the specified target with as less buildsteps as possible.
+    D
+    def build(targetname = :all)
+      RCons::DSL.parse
+      $all_target.build if targetname.to_sym == :all
+    end
+
   end
 
 end
