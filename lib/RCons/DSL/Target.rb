@@ -3,16 +3,16 @@ module RCons::DSL
   # A possible {Target Target} for the compiling process.
   class Target
     # @!attribute [r] dependencies
-    #   @return [Array<Target>] an {Array} of {Target Targets} this {Target Target}
+    #   @return [Array<Target>] an Array of {Target Targets} this {Target Target}
     #     depends on.
     # @!attribute [r] name
     #   @return [String] the name of the target. For targets that correspond to
     #     a file in the filesystem, this is also the filename and path relative
     #     to the project folder.
     # @!attribute [r] parents
-    #   @return [Array<Target>] an {Array} of {Target Targets} this {Target Target}
+    #   @return [Array<Target>] an Array of {Target Targets} this {Target Target}
     #     is a dependency for.
-    #   @bug Isn't resolved completely and seems to have huge holes at some points.
+    #   @todo Isn't resolved completely and seems to have huge holes at some points.
     # @!attribute [r] type
     #   @return [Symbol] the type of the {Target Target}. Can be one of:
     #     <dl>
@@ -49,20 +49,22 @@ module RCons::DSL
       @dependencies = []
       @parents      = []
 
-      case File.extname(@name)
-      when '.c'
-        $logger.info "Guessed type of #{@name} to ':source'"
-        @type = :source if @type == :guess
-        $logger.info "Creating ':intermediate' target '#{File.basename(@name, File.extname(@name))}.o'"
-        inter = Target.new("#{File.basename(@name, File.extname(@name))}.o", :intermediate)
-        self.parents << inter
-        inter.add_dependency self
-      when '.o'
-        $logger.info "Guessed type of #{@name} to ':intermediate'"
-        @type = :intermediate if @type == :guess
-      else
-        $logger.warn "Type of #{@name} is unknown!"
-        @type = :unknown if @type == :guess
+      if @type == :guess
+        case File.extname(@name)
+        when '.c'
+          $logger.info "Guessed type of #{@name} to ':source'"
+          @type = :source if @type == :guess
+          $logger.info "Creating ':intermediate' target '#{File.basename(@name, File.extname(@name))}.o'"
+          inter = Target.new("#{File.basename(@name, File.extname(@name))}.o", :intermediate)
+          self.parents << inter
+          inter.add_dependency self
+        when '.o'
+          $logger.info "Guessed type of #{@name} to ':intermediate'"
+          @type = :intermediate if @type == :guess
+        else
+          $logger.warn "Type of #{@name} is unknown!"
+          @type = :unknown if @type == :guess
+        end
       end
     end
 

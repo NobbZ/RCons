@@ -13,7 +13,6 @@ module RCons
     def initialize(*)
       super
 
-
       Logging.color_scheme('bright',
                            levels: {
                              debug: :blue,
@@ -38,7 +37,8 @@ module RCons
       $logger = Logging.logger[:rcons]
       $logger.add_appenders 'stdout'
       $logger.level = opts[:log]
-      $logger.info "This is RCons v#{VERSION}."
+      puts "This is RCons v#{VERSION}."
+      puts ""
       RCons.check_ruby_version
       $all_target = DSL::Target.new('all', :virtual)
     end
@@ -49,24 +49,15 @@ module RCons
                  banner:    '<loglevel>',
                  default:   1,
                  aliases:   '-l',
-                 desc:      'Sets the log level',
-                 long_desc: <<-EOD
-Sets the log output level:
-  * 0 -> Debug, Info, Warn, Error, Fatal
-  * 1 -> Info, Warn, Error, Fatal
-  * 2 -> Warn, Error, Fatal
-  * 3 -> Error, Fatal
-  * 4 -> Fatal
-  * 5 -> No output!
-    EOD
+                 desc:      'Sets the log level (0 = everything, 4 = only FATAL, 5 = nothing at all)'
     class_option :verbose,
                  type:    :boolean,
                  aliases: '-v',
-                 desc:    'Verbose output, same as `-l 0`'
+                 desc:    'Verbose output, same as `-l0`'
     class_option :silent,
                  type:    :boolean,
                  aliases: '-s',
-                 desc:    'Silent output, same as `-l 3`'
+                 desc:    'Silent output, same as `-l3`'
 
     desc 'graph', 'Draws the dependency graph'
     long_desc <<-EOD
