@@ -39,8 +39,8 @@ module RCons
       $logger.add_appenders 'stdout'
       $logger.level = opts[:log]
       $logger.info "This is RCons v#{VERSION}."
-      RCons.checkRubyVersion
-      $allTarget = DSL::Target.new("all", :virtual)
+      RCons.check_ruby_version
+      $all_target = DSL::Target.new('all', :virtual)
     end
 
     default_task :graph
@@ -81,7 +81,7 @@ Sets the log output level:
     def graph
       opts = options.dup
       RCons::DSL.parse
-      RCons.drawGraph opts[:view]
+      RCons.draw_graph opts[:view]
     end
 
   end

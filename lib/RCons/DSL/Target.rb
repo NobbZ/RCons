@@ -57,6 +57,12 @@ module RCons::DSL
         inter = Target.new("#{File.basename(@name, File.extname(@name))}.o", :intermediate)
         self.parents << inter
         inter.add_dependency self
+      when '.o'
+        $logger.info "Guessed type of #{@name} to ':intermediate'"
+        @type = :intermediate if @type == :guess
+      else
+        $logger.warn "Type of #{@name} is unknown!"
+        @type = :unknown if @type == :guess
       end
     end
 

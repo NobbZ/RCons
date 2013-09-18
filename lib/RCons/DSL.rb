@@ -21,7 +21,7 @@ module RCons::DSL
     $logger.info "Found target '#{target}' with following sources/dependencies:"
     $logger.info sources
     target = Target.new target, :executable
-    $allTarget.add_dependency target
+    $all_target.add_dependency target
     if sources.is_a? String
       sources = [sources]
     end
