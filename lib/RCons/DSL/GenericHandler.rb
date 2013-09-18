@@ -1,3 +1,5 @@
+require 'RCons/DSL'
+
 module RCons::DSL
 
   class GenericHandler
@@ -9,13 +11,14 @@ module RCons::DSL
     def self.get_handler(target)
       case target.type
       when :virtual
-        return GenericHandler.new()
+#        return DSL::GenericHandler.new()
       when :executable
-        return ExecutableHandler.new(target)
+#        return DSL::ExecutableHandler.new(target)
       when :intermediate
-        return IntermediateHandler.new(target)
+#        return DSL::IntermediateHandler.new(target)
       when :source
-        return SourceHandler.new(target)
+        require 'RCons/DSL/SourceHandler'
+        return SourceHandler.get_handler(target)
       else
         $logger.fatal "!" * 40
         $logger.fatal "! It is impossible to build Targets with type `#{target.type}`!"

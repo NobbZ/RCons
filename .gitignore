@@ -19,3 +19,4 @@ tmp
 RConstruct.rb
 depGraph.dot
 depGraph.svg
+testproj

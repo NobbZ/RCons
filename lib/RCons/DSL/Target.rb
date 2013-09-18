@@ -23,6 +23,7 @@ module RCons::DSL
     #       <di><tt>:virtual</tt></di><dd>Defines a target that just has dependencies, but not a real own target. It is used to organize other targets under a common Target.</dd>
     #     </dl>
     attr_reader :dependencies,
+                :handler,
                 :name,
                 :parents,
                 :type
@@ -66,6 +67,8 @@ module RCons::DSL
           @type = :unknown if @type == :guess
         end
       end
+
+      @handler = GenericHandler.get_handler self if @type == :source
     end
 
     # Adds an dependancy to the target
@@ -107,6 +110,15 @@ module RCons::DSL
                    d.to_s.downcase.gsub(/[^a-z0-9]/, ''),
                    {}
       end
+    end
+
+    def build
+      $logger.debug "Starting to build #{@name}"
+      @dependencies.each do |d|
+        d.build
+      end
+      @handler.build unless @handler.nil?
+      $logger.debug "Finished build #{@name}"
     end
   end
 
