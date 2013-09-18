@@ -44,11 +44,11 @@ module RCons
     end
 
     default_task :graph
-    class_option 'log',
+    class_option :log,
                  type:      :numeric,
                  banner:    '<loglevel>',
                  default:   1,
-                 alias:     '-l',
+                 aliases:   '-l',
                  desc:      'Sets the log level',
                  long_desc: <<-EOD
 Sets the log output level:
@@ -59,12 +59,21 @@ Sets the log output level:
   * 4 -> Fatal
   * 5 -> No output!
     EOD
+    class_option :verbose,
+                 type:    :boolean,
+                 aliases: '-v',
+                 desc:    'Verbose output, same as `-l 0`'
+    class_option :silent,
+                 type:    :boolean,
+                 aliases: '-s',
+                 desc:    'Silent output, same as `-l 3`'
 
     desc 'graph', 'Draws the dependency graph'
     long_desc <<-EOD
       Draws the dependency graph of all known targets derived from RConsFile
     EOD
     method_option 'view',
+                  aliases: '-V',
                   type:    :boolean,
                   default: false,
                   desc:    'Opens the graph in viewer after generating it'
