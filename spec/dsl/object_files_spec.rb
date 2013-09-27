@@ -3,7 +3,7 @@ require 'rspec'
 require 'rcons/dsl'
 
 describe RCons::DSL do
-  describe 'version matching' do
+  describe '#requires_rcons_version' do
     before(:each) do
       Kernel.stub :exit
       $stdout.stub :puts
@@ -33,38 +33,40 @@ describe RCons::DSL do
     end
   end
 
-  describe 'compiling' do
-    before :each do
-      Kernel.stub :exit
-      $stdout.puts
-      @dsl = RCons::DSL.new
-      class RCons::Target
-        attr_accessor :file_name, :name, :source_name
+  describe '#object_file' do
+    describe 'resolution of filetype' do
+      before :each do
+        Kernel.stub :exit
+        $stdout.puts
+        @dsl = RCons::DSL.new
+        class RCons::Target
+          attr_accessor :file_name, :name, :source_name
+        end
       end
-    end
 
-    it 'should recognize proper target filename for an object' do
-      test_o = @dsl.object_file 'test'
+      it 'should recognize proper target filename for an object' do
+        test_o = @dsl.object_file 'test'
 
-      test_o.should be_kind_of RCons::Target
-      test_o.name.should eq 'test'
-      test_o.file_name.should eq 'test.o'
-    end
+        test_o.should be_kind_of RCons::Target
+        test_o.name.should eq 'test'
+        test_o.file_name.should eq 'test.o'
+      end
 
-    it 'should recognize proper source filename for an object' do
-      test_o = @dsl.object_file 'test'
+      it 'should recognize proper source filename for an object' do
+        test_o = @dsl.object_file 'test'
 
-      test_o.should be_kind_of RCons::Target
-      test_o.name.should eq 'test'
-      test_o.source_name.should eq 'test.c'
-    end
+        test_o.should be_kind_of RCons::Target
+        test_o.name.should eq 'test'
+        test_o.source_name.should eq 'test.c'
+      end
 
-    it 'should recognize proper target filename for an object if target_name has already an extension' do
-      test_o = @dsl.object_file 'test.o'
+      it 'should recognize proper target filename for an object if target_name has already an extension' do
+        test_o = @dsl.object_file 'test.o'
 
-      test_o.should be_kind_of RCons::Target
-      test_o.name.should eq 'test.o'
-      test_o.file_name.should eq 'test.o'
+        test_o.should be_kind_of RCons::Target
+        test_o.name.should eq 'test.o'
+        test_o.file_name.should eq 'test.o'
+      end
     end
   end
 end
