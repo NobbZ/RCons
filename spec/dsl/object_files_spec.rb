@@ -12,23 +12,23 @@ describe RCons::DSL do
     end
 
     it 'should exit if required version is higher than RCons version' do
-      @dsl.required_version '2.0.0'
+      @dsl.requires_rcons_version '2.0.0'
 
       Kernel.should have_received(:exit).with 1
     end
 
     it 'should exit if required version doesn\'t match `~>` operator' do
-      @dsl.required_version '~> 1.2.4'
+      @dsl.requires_rcons_version '~> 1.2.4'
       Kernel.should have_received(:exit).with 1
     end
 
     it 'should not exit on exact match of version' do
-      @dsl.required_version RCons::VERSION
+      @dsl.requires_rcons_version RCons::VERSION
       Kernel.should_not have_received(:exit)
     end
 
     it 'should not exit on match with `~>` operator' do
-      @dsl.required_version '~> 1.2.2'
+      @dsl.requires_rcons_version '~> 1.2.2'
       Kernel.should_not have_received :exit
     end
   end
