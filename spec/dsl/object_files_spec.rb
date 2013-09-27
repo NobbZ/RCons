@@ -58,5 +58,13 @@ describe RCons::DSL do
       test_o.name.should eq 'test'
       test_o.source_name.should eq 'test.c'
     end
+
+    it 'should recognize proper target filename for an object if target_name has already an extension' do
+      test_o = @dsl.object_file 'test.o'
+
+      test_o.should be_kind_of RCons::Target
+      test_o.name.should eq 'test.o'
+      test_o.file_name.should eq 'test.o'
+    end
   end
 end

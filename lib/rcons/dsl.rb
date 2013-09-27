@@ -48,8 +48,10 @@ module RCons
     def object_file(target_name, file_name = nil, source_file = nil)
       target = RCons::Target.new
       target.name = target_name
-      if File.extname(target_name).empty? || file_name.nil?
+      if File.extname(target_name).empty? && file_name.nil?
         target.file_name = "#{target_name}.o"
+      elsif File.extname(target_name) == '.o'
+        target.file_name = target_name
       end
       if File.extname(target_name).empty? || source_file.nil?
         target.source_name = "#{target_name}.c"
