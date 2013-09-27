@@ -33,9 +33,30 @@ describe RCons::DSL do
     end
   end
 
-  it 'should compile some sources' do
-    pending 'carve out a proper test'
-    #To change this template use File | Settings | File Templates.
-    true.should == false
+  describe 'compiling' do
+    before :each do
+      Kernel.stub :exit
+      $stdout.puts
+      @dsl = RCons::DSL.new
+      class RCons::Target
+        attr_accessor :file_name, :name, :source_name
+      end
+    end
+
+    it 'should recognize proper target filename for an object' do
+      test_o = @dsl.object_file 'test'
+
+      test_o.should be_kind_of RCons::Target
+      test_o.name.should eq 'test'
+      test_o.file_name.should eq 'test.o'
+    end
+
+    it 'should recognize proper source filename for an object' do
+      test_o = @dsl.object_file 'test'
+
+      test_o.should be_kind_of RCons::Target
+      test_o.name.should eq 'test'
+      test_o.source_name.should eq 'test.c'
+    end
   end
 end

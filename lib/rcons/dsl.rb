@@ -41,5 +41,20 @@ module RCons
         Kernel.exit 1
       end
     end
+
+    # @param [String, #to_s] target_name
+    # @param [String, #to_s] file_name
+    # @param [Array<String>, String, #to_s] source_file
+    def object_file(target_name, file_name = nil, source_file = nil)
+      target = RCons::Target.new
+      target.name = target_name
+      if File.extname(target_name).empty? || file_name.nil?
+        target.file_name = "#{target_name}.o"
+      end
+      if File.extname(target_name).empty? || source_file.nil?
+        target.source_name = "#{target_name}.c"
+      end
+      target
+    end
   end
 end
